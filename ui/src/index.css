@@ -1,0 +1,678 @@
+html,
+body {
+    margin: 0;
+    height: 100%;
+}
+body {
+    background: #5a7ea6 url("/nim-assets/clouds.jpg") center/cover no-repeat
+        fixed;
+    font-family: "Pixelated MS Sans Serif", Arial, sans-serif;
+    font-size: 11px;
+}
+#root {
+    min-height: 100vh;
+}
+.desktop {
+    position: relative;
+    min-height: 100vh;
+    min-width: 1040px;
+    padding-bottom: 36px;
+}
+.float {
+    position: absolute;
+}
+/* draggable handle: suppress text selection and let pointer drags work on touch */
+.float > .title-bar {
+    user-select: none;
+    touch-action: none;
+    cursor: default;
+}
+.titleman {
+    height: 13px;
+    vertical-align: -2px;
+    margin-right: 3px;
+}
+.menu-bar {
+    gap: 14px;
+    padding: 2px 4px 3px;
+    background: silver;
+}
+.menu-bar u {
+    border-bottom: 0.5px solid #222;
+}
+
+/* ===================== SIGN ON ===================== */
+#signon {
+    left: 24px;
+    top: 24px;
+    width: 300px;
+}
+#signon .window-body {
+    margin: 4px;
+}
+.signon-art {
+    box-shadow:
+        inset -1px -1px #fff,
+        inset 1px 1px grey,
+        inset -2px -2px #dfdfdf,
+        inset 2px 2px #0a0a0a;
+    margin-bottom: 8px;
+    line-height: 0;
+}
+.signon-art img,
+.signon-art .logo-square {
+    width: 100%;
+    display: block;
+}
+.signon-art .logo-square {
+    width: 50%;
+    margin: 0 auto;
+}
+.logo-square {
+    aspect-ratio: 1 / 1;
+    background: lightblue;
+}
+.so-row {
+    margin: 6px 4px 2px;
+}
+.so-row.lbl img {
+    height: 12px; /* native size — no upscaling, so it stays crisp */
+    display: block;
+    image-rendering: auto;
+}
+.so-label {
+    font-weight: bold;
+    font-size: 12px;
+}
+.so-select,
+.so-input {
+    width: 100%;
+    box-sizing: border-box;
+}
+/* Rendered as a <button> for accessibility, styled to look like a link.
+   Scoped to #signon so it outranks 98.css's global button bevel
+   (box-shadow / min-width / background) in every state, including :active. */
+#signon .so-link {
+    appearance: none;
+    border: none;
+    background: none;
+    box-shadow: none;
+    min-width: 0;
+    min-height: 0;
+    padding: 0;
+    color: #00f;
+    text-decoration: underline;
+    font-size: 11px;
+    display: inline-block;
+    margin: 2px 4px 6px;
+    cursor: pointer;
+}
+/* Link-style focus ring instead of 98.css's inset (-4px) button outline,
+   which otherwise cuts through the small inline link text. */
+#signon .so-link:focus {
+    outline: 1px dotted #00f;
+    outline-offset: 0;
+}
+.so-checks {
+    gap: 22px;
+    margin: 6px 4px 4px;
+}
+.signon-buttons {
+    margin: 14px 4px 4px;
+}
+.signon-buttons img {
+    display: block;
+    cursor: default;
+}
+/* render at native size with smooth scaling so they aren't pixelated */
+.signon-buttons .tbtn img {
+    image-rendering: auto;
+}
+.signon-buttons .help {
+    height: 32px;
+}
+.signon-buttons .setup {
+    height: 31px;
+}
+.signon-buttons .signon {
+    height: 32px;
+}
+
+/* ===================== INSTANT MESSAGE ===================== */
+#im {
+    left: 344px;
+    top: 36px;
+    width: 440px;
+    z-index: 5;
+}
+#im .window-body {
+    margin: 0;
+    padding: 2px;
+    background: silver;
+}
+.im-row {
+    gap: 2px;
+}
+.im-avatars {
+    width: 52px;
+    padding-top: 2px;
+}
+.im-avatars .av {
+    text-align: center;
+}
+.im-avatars .av img {
+    width: 32px;
+    height: 32px;
+    image-rendering: crisp-edges;
+    display: block;
+    margin: 0 auto 1px;
+}
+.im-transcript {
+    background: #fff;
+    box-shadow:
+        inset -1px -1px #fff,
+        inset 1px 1px grey,
+        inset -2px -2px #dfdfdf,
+        inset 2px 2px #0a0a0a;
+    height: 104px;
+    overflow-y: auto;
+    padding: 4px 5px;
+    font-size: 14px;
+    font-family: "Times New Roman", Georgia, serif;
+    -webkit-font-smoothing: antialiased;
+}
+.im-transcript p {
+    margin: 0 0 9px;
+}
+.im-transcript .sender {
+    color: #4a2fd6;
+    font-weight: bold;
+}
+.im-transcript a {
+    color: #00f;
+    text-decoration: underline;
+}
+.im-transcript .emote {
+    height: 16px;
+    vertical-align: -3px;
+    image-rendering: crisp-edges;
+}
+
+/* ---- shared formatting toolbar (used by IM + Away) ---- */
+.format-bar {
+    gap: 2px;
+    padding: 4px 2px;
+}
+.format-bar .vertical-bar {
+    margin: 0 3px;
+}
+.format-bar button {
+    min-width: 0;
+    width: 22px;
+    height: 22px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: none;
+    background: transparent;
+}
+.format-bar button:hover,
+.format-bar button.hot {
+    box-shadow:
+        inset -1px -1px 0 #808088,
+        inset 1px 1px 0 #fff;
+}
+.format-bar button:not(:disabled):active,
+.format-bar button.pressed {
+    box-shadow:
+        inset -1px -1px 0 #fff,
+        inset 1px 1px 0 #808088;
+}
+.format-bar button:not(:disabled):active img,
+.format-bar button.pressed img {
+    transform: translate(1px, 1px);
+}
+.format-bar button img {
+    width: auto;
+    height: auto;
+    image-rendering: pixelated;
+}
+
+.im-compose {
+    background: #fff;
+    box-shadow:
+        inset -1px -1px #fff,
+        inset 1px 1px grey,
+        inset -2px -2px #dfdfdf,
+        inset 2px 2px #0a0a0a;
+    height: 60px;
+    padding: 3px 4px;
+    box-sizing: border-box;
+    overflow: auto;
+    cursor: text;
+    outline: none;
+    font-family: "Times New Roman", Georgia, serif;
+    font-size: 14px;
+    -webkit-font-smoothing: antialiased;
+}
+
+.im-bottom {
+    gap: 2px;
+    margin: 3px 0 4px;
+}
+.im-bottom-av {
+    flex: 0 0 52px;
+    text-align: center;
+}
+.im-bottom-av img {
+    width: 32px;
+    height: 32px;
+    image-rendering: crisp-edges;
+}
+.im-toolbar {
+    /* flex-1 (PrimeFlex) fills width beside the avatar = same width as the input box */
+    background: silver;
+    box-shadow:
+        inset 1px 1px #808080,
+        inset -1px -1px #fff;
+}
+.tb-group {
+    padding: 9px 12px 17px; /* extra bottom room so the Send meter clears the border */
+    gap: 4px;
+}
+.tb-send {
+    padding-left: 16px;
+    padding-right: 18px;
+}
+.tb-div {
+    width: 2px;
+    margin: 3px 0;
+    border-left: 1px solid #808088;
+    border-right: 1px solid #fff;
+}
+.send-wrap {
+    position: relative;
+}
+.send-wrap img {
+    display: block;
+}
+
+.tbtn {
+    display: inline-block;
+    padding: 3px;
+    cursor: default;
+    background: transparent;
+}
+.tbtn img {
+    display: block;
+    image-rendering: pixelated;
+}
+/* The resting image stays in flow and defines the button's box; the hover
+   image is overlaid on top so its slightly different size never shifts the
+   layout. Both share the bottom-left baseline. */
+.tbtn-img {
+    position: relative;
+    display: inline-block;
+}
+/* Selectors qualified with `img` so they outrank `.tbtn img { display: block }`
+   — otherwise the overlay would always be visible (permanent-hover look). */
+.tbtn img.tbtn-hover {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    display: none;
+}
+.tbtn:hover img.tbtn-hover {
+    display: block;
+}
+.tbtn:hover .tbtn-img > img:not(.tbtn-hover) {
+    visibility: hidden;
+}
+/* Hover raise is baked into the swapped image, so no bevel is needed here. */
+.tbtn:active,
+.tbtn.pressed {
+    box-shadow:
+        inset -1px -1px 0 #fff,
+        inset 1px 1px 0 #808088;
+}
+.tbtn:active img,
+.tbtn.pressed img {
+    transform: translate(1px, 1px);
+}
+.send-meter {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 2px;
+    gap: 1px;
+    height: 8px;
+    width: 48px;
+    padding: 1px;
+    box-sizing: border-box;
+    background: #000;
+    box-shadow:
+        inset 1px 1px #808088,
+        inset -1px -1px #fff;
+}
+.send-meter i.r {
+    background: linear-gradient(#4a0000, #ff1414 55%, #4a0000);
+}
+.send-meter i.y {
+    background: linear-gradient(#6a6a00, #fff024 55%, #6a6a00);
+}
+.send-meter i.g {
+    background: linear-gradient(#063606, #28cc28 55%, #063606);
+}
+
+/* ===================== BUDDY LIST ===================== */
+#buddy {
+    left: 808px;
+    top: 36px;
+    width: 232px;
+    z-index: 8;
+}
+#buddy .window-body {
+    margin: 0;
+    padding: 3px;
+    background: silver;
+}
+.buddy-banner {
+    line-height: 0;
+    margin-bottom: 4px;
+    box-shadow:
+        inset -1px -1px #fff,
+        inset 1px 1px grey,
+        inset -2px -2px #dfdfdf,
+        inset 2px 2px #0a0a0a;
+}
+.buddy-banner img,
+.buddy-banner .logo-square {
+    width: 100%;
+    display: block;
+}
+.buddy-banner .logo-square {
+    aspect-ratio: auto;
+    height: 28px;
+}
+.buddy-tabs {
+    gap: 1px;
+    margin: 0 0 -2px 2px;
+}
+.buddy-tabs .tab {
+    padding: 3px 12px 4px;
+    font-size: 11px;
+    background: silver;
+    box-shadow:
+        inset 1px 1px #fff,
+        inset 2px 2px #dfdfdf,
+        inset -1px 0 #000,
+        inset -2px 0 #7f7f7f;
+    border-radius: 3px 3px 0 0;
+    position: relative;
+    cursor: default;
+}
+.buddy-tabs .tab.active {
+    z-index: 2;
+    font-weight: bold;
+    padding-bottom: 5px;
+}
+.buddy-list {
+    background: #fff;
+    box-shadow:
+        inset -1px -1px #fff,
+        inset 1px 1px grey,
+        inset -2px -2px #dfdfdf,
+        inset 2px 2px #0a0a0a;
+    height: 300px;
+    overflow: auto;
+    padding: 4px 2px;
+    position: relative;
+    z-index: 1;
+    font-family: Tahoma, Arial, sans-serif;
+    font-size: 12px;
+    -webkit-font-smoothing: antialiased;
+}
+.buddy-group {
+    font-weight: bold;
+    padding: 4px 2px 3px;
+    cursor: default;
+}
+.buddy-group .arrow {
+    display: inline-block;
+    width: 12px;
+    color: #000;
+    font-size: 8px;
+    vertical-align: 1px;
+}
+.buddy-item {
+    padding: 3px 2px 3px 20px;
+    cursor: default;
+    user-select: none;
+}
+.buddy-item span {
+    padding: 0 2px;
+}
+.buddy-item.selected span {
+    background: #ffff00;
+    color: #000;
+    outline: 1px dotted #000;
+}
+.buddy-bottom {
+    gap: 8px;
+    padding: 6px 6px 2px;
+}
+.buddy-bottom .tbtn img {
+    height: 22px;
+    width: auto;
+}
+
+/* ===================== EDIT AWAY MESSAGE ===================== */
+#away {
+    left: 344px;
+    top: 452px;
+    width: 420px;
+    z-index: 12;
+}
+#away .window-body {
+    margin: 8px;
+}
+.away-row {
+    margin: 4px 0 10px;
+}
+.away-row > label {
+    width: 86px;
+}
+.away-label-edit {
+    margin: 6px 0 4px;
+}
+.away-text {
+    background: #fff;
+    box-shadow:
+        inset -1px -1px #fff,
+        inset 1px 1px grey,
+        inset -2px -2px #dfdfdf,
+        inset 2px 2px #0a0a0a;
+    height: 110px;
+    padding: 6px;
+    overflow: auto;
+    font-family: "Comic Sans MS", Tahoma, sans-serif;
+    color: #ff00d0;
+    font-weight: bold;
+    font-size: 19px;
+    line-height: 1.15;
+    cursor: text;
+    outline: none;
+}
+.away-special {
+    margin: 10px 2px;
+}
+.away-special .row {
+    margin: 2px 0;
+}
+.away-save {
+    float: right;
+    margin-top: -38px;
+}
+.away-buttons {
+    gap: 26px;
+    margin-top: 12px;
+}
+
+/* ===================== TASKBAR ===================== */
+.taskbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 28px;
+    background: silver;
+    box-shadow:
+        inset 0 1px #fff,
+        inset 0 2px #dfdfdf;
+    padding: 2px 3px;
+    gap: 4px;
+    z-index: 50;
+}
+.start-btn {
+    font-weight: bold;
+    font-size: 11px;
+    height: 22px;
+    gap: 4px;
+    padding: 0 8px 0 5px;
+    box-shadow:
+        inset -1px -1px #0a0a0a,
+        inset 1px 1px #fff,
+        inset -2px -2px grey,
+        inset 2px 2px #dfdfdf;
+}
+.start-btn .flag {
+    display: inline-grid;
+    grid-template-columns: 6px 6px;
+    grid-template-rows: 6px 6px;
+    gap: 1px;
+    transform: skewX(-8deg);
+}
+.start-btn .flag i {
+    display: block;
+}
+.start-btn .flag i:nth-child(1) {
+    background: #f33;
+}
+.start-btn .flag i:nth-child(2) {
+    background: #3c3;
+}
+.start-btn .flag i:nth-child(3) {
+    background: #39f;
+}
+.start-btn .flag i:nth-child(4) {
+    background: #fc3;
+}
+.tray {
+    margin-left: auto;
+    height: 22px;
+    padding: 0 8px;
+    font-size: 11px;
+    box-shadow:
+        inset -1px -1px #fff,
+        inset 1px 1px grey,
+        inset -2px -2px #dfdfdf,
+        inset 2px 2px #0a0a0a;
+}
+
+/* ===================== RESIZABLE WINDOWS ===================== */
+/* Grip in each window's bottom-right corner; drag to resize (down to 80% of
+   the natural size — see MIN_SCALE in Window.tsx). */
+.resize-handle {
+    position: absolute;
+    right: 1px;
+    bottom: 1px;
+    width: 14px;
+    height: 14px;
+    cursor: nwse-resize;
+    /* faint diagonal grip lines, classic Win9x style */
+    background-image: repeating-linear-gradient(
+        135deg,
+        transparent 0 2px,
+        grey 2px 3px,
+        #fff 3px 4px
+    );
+    z-index: 20;
+}
+/* Once resized, the window becomes a flex column so the body absorbs the new
+   height and scrolls (98.css styles the scrollbars) rather than spilling past
+   the chrome; the title bar and menu strip keep their natural height. */
+.window.resized {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    /* match the JS size (measured via offsetWidth/Height) to the applied width
+       so the 80% floor is exact rather than off by the 3px chrome padding. */
+    box-sizing: border-box;
+}
+.window.resized > .title-bar,
+.window.resized > .menu-bar {
+    flex: 0 0 auto;
+}
+.window.resized > .window-body {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: auto;
+    /* lay the body out as a column so its main region can absorb the extra
+       height while toolbars/buttons stay pinned to the bottom (rules below). */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Per-window: which region grows, so the rest keeps its place when resized. */
+/* IM: the conversation area grows; the avatar + toolbar strip stays at bottom. */
+#im.resized .im-row {
+    flex: 1 1 auto;
+    min-height: 0;
+}
+#im.resized .im-content {
+    min-height: 0;
+}
+#im.resized .im-transcript {
+    flex: 1 1 auto;
+    height: auto;
+    min-height: 48px;
+}
+#im.resized .im-bottom {
+    flex: 0 0 auto;
+}
+/* Buddy list: the list grows; the action buttons stay at the bottom. */
+#buddy.resized .buddy-list {
+    flex: 1 1 auto;
+    height: auto;
+    min-height: 0;
+}
+#buddy.resized .buddy-bottom {
+    flex: 0 0 auto;
+}
+/* Away: the message editor grows; the help text + buttons stay below it. */
+#away.resized .away-text {
+    flex: 1 1 auto;
+    height: auto;
+    min-height: 40px;
+}
+/* Sign On: the logo art grows to take up the slack; the form fields keep their
+   natural size and the bottom button row stays anchored to the bottom. The
+   links must opt out of the column's default stretch, otherwise the <button>s
+   fill the width and their centered text looks centered instead of left. */
+#signon.resized .signon-art {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+}
+#signon.resized .signon-art img,
+#signon.resized .signon-art .logo-square {
+    margin: auto;
+}
+#signon.resized .so-link {
+    align-self: flex-start;
+}
+#signon.resized .signon-buttons {
+    flex: 0 0 auto;
+}
