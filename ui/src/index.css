@@ -40,12 +40,78 @@ body {
 .menu-bar u {
     border-bottom: 0.5px solid #222;
 }
+/* Titles read as plain text whether they're a static <span> or a dropdown
+   <button>; only the open one gets the navy highlight. */
+.menu-title {
+    background: transparent;
+    border: 0;
+    /* override 98.css's global button bevel + sizing so titles read as text */
+    box-shadow: none;
+    min-width: 0;
+    min-height: 0;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    color: inherit;
+    cursor: default;
+}
+.menu-item {
+    position: relative;
+}
+.menu-title.open {
+    background: #000080;
+    color: #fff;
+}
+.menu-title.open u {
+    border-bottom-color: #fff;
+}
+.menu-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 100;
+    min-width: 168px;
+    padding: 2px;
+    background: silver;
+    box-shadow:
+        inset -1px -1px #0a0a0a,
+        inset 1px 1px #fff,
+        inset -2px -2px #7f7f7f,
+        inset 2px 2px #dfdfdf;
+}
+.menu-entry {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 3px 18px 3px 22px;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    min-width: 0;
+    min-height: 0;
+    font: inherit;
+    color: inherit;
+    cursor: default;
+    white-space: nowrap;
+}
+.menu-entry:hover,
+.menu-entry:focus {
+    background: #000080;
+    color: #fff;
+    outline: none;
+}
+.menu-separator {
+    height: 0;
+    margin: 3px 1px;
+    border-top: 1px solid #7f7f7f;
+    border-bottom: 1px solid #fff;
+}
 
 /* ===================== SIGN ON ===================== */
 #signon {
     left: 24px;
     top: 24px;
-    width: 300px;
+    width: 231px;
 }
 #signon .window-body {
     margin: 4px;
@@ -70,7 +136,6 @@ body {
 }
 .logo-square {
     aspect-ratio: 1 / 1;
-    background: lightblue;
 }
 .so-row {
     margin: 6px 4px 2px;
@@ -398,25 +463,42 @@ body {
 }
 .buddy-tabs {
     gap: 1px;
-    margin: 0 0 -2px 2px;
+    /* no left margin so the first (active) tab's left edge lines up with the
+       list's left border below */
+    margin: 0 0 -2px 0;
+    /* shorter inactive tabs align to the bottom; the taller active tab rises */
+    align-items: flex-end;
 }
 .buddy-tabs .tab {
-    padding: 3px 12px 4px;
+    padding: 3px 13px 4px;
     font-size: 11px;
+    font-family: inherit;
+    color: inherit;
+    border: 0;
     background: silver;
+    /* inactive tabs sit recessed/behind: light-grey top-left, light bottom-right */
     box-shadow:
-        inset 1px 1px #fff,
-        inset 2px 2px #dfdfdf,
-        inset -1px 0 #000,
-        inset -2px 0 #7f7f7f;
+        inset 1px 1px #a8a8a8,
+        inset -1px -1px #fff;
+    min-width: 0;
+    min-height: 0;
+    /* slightly rounded top corners */
     border-radius: 3px 3px 0 0;
     position: relative;
     cursor: default;
 }
 .buddy-tabs .tab.active {
-    z-index: 2;
+    z-index: 3;
     font-weight: bold;
-    padding-bottom: 5px;
+    /* taller (rises above the others) + raised bevel so it protrudes outward:
+       light top-left, dark bottom-right */
+    padding: 4px 13px 6px;
+    /* left edge stays flush with the list border; overlap only on the right */
+    margin: 0 -1px 0 0;
+    /* thin 1px raised bevel so the left edge lines up cleanly with the list */
+    box-shadow:
+        inset 1px 1px #fff,
+        inset -1px -1px #808080;
 }
 .buddy-list {
     background: #fff;
@@ -434,7 +516,22 @@ body {
     font-size: 12px;
     -webkit-font-smoothing: antialiased;
 }
+.buddy-setup p {
+    margin: 0;
+    padding: 8px 10px;
+    color: #444;
+}
 .buddy-group {
+    display: block;
+    width: 100%;
+    text-align: left;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    min-width: 0;
+    min-height: 0;
+    color: inherit;
+    font: inherit;
     font-weight: bold;
     padding: 4px 2px 3px;
     cursor: default;
@@ -445,6 +542,19 @@ body {
     color: #000;
     font-size: 8px;
     vertical-align: 1px;
+}
+/* Keep these flat while pressed too — outranks 98.css's active button bevel. */
+.menu-bar .menu-title:active,
+.menu-dropdown .menu-entry:active,
+.buddy-list .buddy-group:active {
+    box-shadow: none;
+}
+/* inactive tabs keep their recessed edge while pressed (don't invert like a
+   button); the active tab's own raised rule above already wins on press */
+.buddy-tabs .tab:not(.active):active {
+    box-shadow:
+        inset 1px 1px #a8a8a8,
+        inset -1px -1px #fff;
 }
 .buddy-item {
     padding: 3px 2px 3px 20px;

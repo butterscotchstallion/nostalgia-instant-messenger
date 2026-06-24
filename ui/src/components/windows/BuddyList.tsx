@@ -5,18 +5,53 @@ import { MenuBar } from "../MenuBar";
 import { HotButton } from "../HotButton";
 
 const MENU = [
-    { label: "MyNIM", accel: "M" },
-    { label: "People", accel: "P" },
-    { label: "Help", accel: "H" },
+    {
+        label: "MyNIM",
+        accel: "M",
+        items: [
+            "My Instant Messages",
+            "My Saved IMs",
+            "My Profile",
+            "-",
+            "Sign Off",
+            "Exit",
+        ],
+    },
+    {
+        label: "People",
+        accel: "P",
+        items: [
+            "Send Instant Message...",
+            "Get Buddy Info...",
+            "-",
+            "Add Buddy...",
+            "Add Group...",
+            "Edit Buddy List",
+        ],
+    },
+    { label: "Help", accel: "H", items: ["Help Topics", "-", "About NIM"] },
 ];
 
-/** A bold, collapsible-looking group header (e.g. "Buddies (0/2)"). */
-export function BuddyGroup({ label }: { label: string }) {
+/** A bold, collapsible group header (e.g. "Buddies (3/3)"). */
+export function BuddyGroup({
+    label,
+    collapsed,
+    onToggle,
+}: {
+    label: string;
+    collapsed: boolean;
+    onToggle: () => void;
+}) {
     return (
-        <div className="buddy-group">
-            <span className="arrow">▼</span>
+        <button
+            type="button"
+            className="buddy-group"
+            aria-expanded={!collapsed}
+            onClick={onToggle}
+        >
+            <span className="arrow">{collapsed ? "▶" : "▼"}</span>
             {label}
-        </div>
+        </button>
     );
 }
 
@@ -50,22 +85,42 @@ export function BuddyItem({
 }
 
 interface Group {
-    label: string;
+    name: string;
     buddies: string[];
 }
 
 const GROUPS: Group[] = [
     {
-        label: "Buddies (0/2)",
+        name: "Buddies",
         buddies: ["SmarterChild", "AmyRodeo98", "XxXInxNIMxWexTrustXxX"],
     },
-    { label: "Family (0/0)", buddies: [] },
-    { label: "Co-workers (0/0)", buddies: [] },
-    { label: "Offline (0/0)", buddies: [] },
+    { name: "Family", buddies: ["PixieGal999", "FairyQueen228652"] },
+    { name: "Co-workers", buddies: ["RollTheDice9285"] },
+    { name: "Offline", buddies: ["DexterMorgan"] },
 ];
+
+const TABS = [
+    { id: "online", label: "Online" },
+    { id: "setup", label: "List Setup" },
+] as const;
+
+type TabId = (typeof TABS)[number]["id"];
 
 export function BuddyList() {
     const [selected, setSelected] = useState<string | null>("SmarterChild");
+    const [tab, setTab] = useState<TabId>("online");
+    // Groups collapsed by the user; "Offline" starts collapsed.
+    const [collapsed, setCollapsed] = useState<Set<string>>(
+        () => new Set(["Offline"]),
+    );
+
+    const toggleGroup = (name: string) =>
+        setCollapsed((prev) => {
+            const next = new Set(prev);
+            if (next.has(name)) next.delete(name);
+            else next.add(name);
+            return next;
+        });
 
     return (
         <Window id="buddy" title="test's Buddy List">
@@ -75,26 +130,49 @@ export function BuddyList() {
                     {/*<div className="logo-square" role="img" aria-label="NIM" />*/}
                 </div>
 
-                <div className="buddy-tabs flex">
-                    <div className="tab active">Online</div>
-                    <div className="tab">List Setup</div>
-                </div>
-
-                <div className="buddy-list">
-                    {GROUPS.map((group) => (
-                        <div key={group.label}>
-                            <BuddyGroup label={group.label} />
-                            {group.buddies.map((name) => (
-                                <BuddyItem
-                                    key={name}
-                                    name={name}
-                                    selected={selected === name}
-                                    onSelect={() => setSelected(name)}
-                                />
-                            ))}
-                        </div>
+                <div className="buddy-tabs flex" role="tablist">
+                    {TABS.map((t) => (
+                        <button
+                            key={t.id}
+                            type="button"
+                            role="tab"
+                            aria-selected={tab === t.id}
+                            className={`tab${tab === t.id ? " active" : ""}`}
+                            onClick={() => setTab(t.id)}
+                        >
+                            {t.label}
+                        </button>
                     ))}
                 </div>
+
+                {tab === "online" ? (
+                    <div className="buddy-list" role="listbox">
+                        {GROUPS.map((group) => (
+                            <div key={group.name}>
+                                <BuddyGroup
+                                    label={`${group.name} (${group.buddies.length}/${group.buddies.length})`}
+                                    collapsed={collapsed.has(group.name)}
+                                    onToggle={() => toggleGroup(group.name)}
+                                />
+                                {!collapsed.has(group.name) &&
+                                    group.buddies.map((name) => (
+                                        <BuddyItem
+                                            key={name}
+                                            name={name}
+                                            selected={selected === name}
+                                            onSelect={() => setSelected(name)}
+                                        />
+                                    ))}
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    <div className="buddy-list buddy-setup">
+                        <p>
+                            Use List Setup to add, remove, and organize buddies.
+                        </p>
+                    </div>
+                )}
 
                 <div className="buddy-bottom flex align-items-end">
                     <HotButton
