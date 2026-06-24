@@ -1,4 +1,4 @@
-import { asset } from "../../assets";
+import { asset, buddyIcon } from "../../assets";
 import { Window } from "../Window";
 import { MenuBar } from "../MenuBar";
 import { FormatBar } from "../FormatBar";
@@ -27,7 +27,7 @@ export function InstantMessage({
         <div className="im-row flex">
           <div className="im-avatars flex flex-column align-items-center">
             <div className="av">
-              <img src={asset("av_robot.svg")} alt="" />
+              <img src={buddyIcon("robot.gif")} alt="" />
             </div>
           </div>
           <div className="im-content flex-1 flex flex-column">
@@ -48,7 +48,7 @@ export function InstantMessage({
 
         <div className="im-bottom flex align-items-center">
           <div className="im-bottom-av">
-            <img src={asset("av_mandy.svg")} alt="" />
+            <img src={buddyIcon("blink182.gif")} alt="" />
           </div>
           <div className="im-toolbar flex align-items-stretch flex-1">
             <div className="tb-group flex align-items-end">
